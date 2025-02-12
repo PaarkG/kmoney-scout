@@ -9,4 +9,16 @@
 
 import StatboticsService
 
+while True:
+    number = input("number a robotics team: ")
+    print('fetching...')
+    print('processing...')
+    print('considering...')
+    response = StatboticsService.getTeamData(number)
+    if response.status_code == 200:
+        print(response.json()['name'])
+        print('pretty chill team ngl bro')
+    else:
+        print("not a valid team number or the api is down :()")
+
 print(StatboticsService.getTeamData(1699).json())
