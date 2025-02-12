@@ -1,4 +1,4 @@
-from PokeService import PokeService
+import PokeService
 
 while True:
     response = PokeService.getPokemonData(input("Name a pokemon: "))
