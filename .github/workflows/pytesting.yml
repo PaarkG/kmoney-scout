@@ -1,0 +1,19 @@
+name: Api Pytests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: actions-pytest
+        uses: xoviat/actions-pytest@0.1-alpha2
