@@ -16,4 +16,4 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Pytest
-        run: py.test
+        run: pytest poke_test.py
