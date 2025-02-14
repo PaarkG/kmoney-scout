@@ -11,10 +11,18 @@ import StatboticsService
 
 while True:
     number = input("number a robotics team: ")
+    print('hmmmmm')
+    year = input("pick a year: ")
     print('fetching...')
-    epa = StatboticsService.getTeamYearEpa(number, 2024)
+    teleop = StatboticsService.getTeamYearTeleopEpa(number, year)
     print('processing...')
+    auto = StatboticsService.getTeamYearAutoEpa(number, year)
     print('considering...')
-    print(epa)
+    endgame = StatboticsService.getTeamYearEndgameEpa(number, year)
+    print("EPA BREAKDOWN \n----------")
+    print("AUTO: " + str(auto))
+    print("TELEOP: " + str(teleop))
+    print("ENDGAME: " + str(endgame))
+    print("----------")
 
 # print(StatboticsService.getTeamData(1699).json())
