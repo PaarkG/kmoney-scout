@@ -14,6 +14,17 @@ def getStatus():
     response = ApiService.get(url, headers=headers)
     return response
 
+def getEventTeams(event_key='2025mawne'):
+    url = ApiService.generateUrl(getRoot(), 'event/' + str(event_key) + "/teams/simple")
+    headers = getDefaultHeaders()
+    response = ApiService.get(url, headers=headers)
+    response_json = response.json()
+    teams = []
+    for team in response_json:
+        teams.append(team['team_number'])
+    return teams
+
+
 def getTeamData(number='1699'):
     url = ApiService.generateUrl(getRoot(), 'team/frc' + str(number))
     headers = getDefaultHeaders()
@@ -53,7 +64,6 @@ def getTopCoral(reef_dict):
     top_auto = auto['topRow']
     for node in top_auto:
         if top_auto[node] == True:
-            print(node)
             number_scored += 1
     teleop = reef_dict['teleop']
     top_teleop = teleop['topRow']
@@ -90,7 +100,7 @@ def getBotCoral(reef_dict):
             number_scored += 1
     return number_scored
 
-def getAverageTopCoral(number='1699', event_key='2025week0'):
+def getEventAverageTopCoral(number='1699', event_key='2025week0'):
     number_matches = 0
     number_coral = 0
     match_data = getTeamSeasonMatchData(number, [event_key])[0]
@@ -102,7 +112,24 @@ def getAverageTopCoral(number='1699', event_key='2025week0'):
             reef_dict = getReefDict(match, 'red')
         number_coral += getTopCoral(reef_dict)
         number_matches += 1
+    if float(number_matches) <= 0:
+        return 0
     return float(number_coral) / float(number_matches)
 
-print(getAverageTopCoral(97, '2025week0'))
-
+def getSeasonAverageTopCoral(number='1699'):
+    number_matches = 0
+    number_coral = 0
+    match_data = getTeamSeasonMatchData(number, getTeamSeasonEventKeys(str(number), 2025))
+    for match in match_data:
+        if match == []:
+            continue
+        reef_dict = None
+        if 'frc' + str(number) in match[0]['alliances']['blue']:
+            reef_dict = getReefDict(match[0], 'blue')
+        else:
+            reef_dict = getReefDict(match[0], 'red')
+        number_coral += getTopCoral(reef_dict)
+        number_matches += 1
+    if float(number_matches) <= 0:
+        return 0
+    return float(number_coral) / float(number_matches)
